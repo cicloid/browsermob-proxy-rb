@@ -10,7 +10,12 @@ module BrowserMob
         decode_method = sm.include?(:load) ? :load : :decode
 
         new_proxy_url = URI.join(server_url, "proxy")
-        new_proxy_url.query = "port=#{port}" if port
+
+        query = ""
+        query += "port=#{port}" if port
+        query += "&trustAllServers=true"
+
+        new_proxy_url.query = query
 
         port = MultiJson.send(decode_method,
           RestClient.post(new_proxy_url.to_s, '')
